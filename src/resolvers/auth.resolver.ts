@@ -1,7 +1,8 @@
 import { User } from '@generated/type-graphql';
 import { Arg, Ctx, Mutation, Query, Resolver } from 'type-graphql';
-import { Service } from 'typedi';
+import Container, { Service } from 'typedi';
 
+import { PassportWrapper } from 'config/passport';
 import { LoginInput } from 'dto/auth.dto';
 import { AuthService } from 'services/auth.service';
 import { Context } from 'types/context';
@@ -16,8 +17,8 @@ export default class AuthResolver {
     @Arg('input', { nullable: true }) { email, password }: LoginInput,
     @Ctx() ctx: Context,
   ) {
-    const { user } = await ctx.authenticate('graphql-local', {
-      // @ts-ignore
+    const passport = Container.get(PassportWrapper);
+    const { user } = await passport.authenticate(ctx.authenticate, {
       email,
       password,
     });

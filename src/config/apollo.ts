@@ -37,5 +37,7 @@ export async function initApollo() {
     }),
   });
 
+  Container.set(ApolloServer, apolloServer);
+
   return apolloServer;
 }

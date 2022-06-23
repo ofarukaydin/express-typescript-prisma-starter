@@ -1,26 +1,18 @@
 import 'reflect-metadata';
-import cookieParser from 'cookie-parser';
-import express from 'express';
+
+import Container from 'typedi';
 
 import config from 'config';
 import { initApollo } from 'config/apollo';
-import { setHeadersForApolloStudio } from 'config/apollo-studio';
 import { corsOptions } from 'config/cors';
-import { initPassport } from 'config/passport';
-import { initSession } from 'config/session';
+import { ExpressWrapper } from 'config/passport';
 
 const startServer = async () => {
   const apolloServer = await initApollo();
-  const app = express();
-
-  app.use(express.json());
-  app.use(cookieParser());
-
-  setHeadersForApolloStudio(app);
-  initSession(app);
-  initPassport(app);
+  const { app } = Container.get(ExpressWrapper);
 
   await apolloServer.start();
+
   apolloServer.applyMiddleware({
     app,
     cors: corsOptions,
