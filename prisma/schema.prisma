@@ -1,0 +1,50 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+generator typegraphql {
+  provider = "typegraphql-prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// enum Role {
+//   USER
+//   ADMIN
+// }
+
+model User {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  /// @TypeGraphQL.omit(output: true)
+  password  String
+  habits    Habit[]
+  // role      Role     @default(USER)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Habit {
+  id        Int         @id @default(autoincrement())
+  name      String
+  user      User        @relation(fields: [userId], references: [id])
+  userId    Int
+  HabitItem HabitItem[]
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+}
+
+model HabitItem {
+  id              Int      @id @default(autoincrement())
+  completion_date String
+  habit           Habit    @relation(fields: [habitId], references: [id])
+  habitId         Int
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
