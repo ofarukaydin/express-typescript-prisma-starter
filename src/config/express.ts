@@ -2,8 +2,8 @@ import cookieParser from 'cookie-parser';
 import express, { Express } from 'express';
 import { Service } from 'typedi';
 
+import { PassportWrapper } from 'auth/passport';
 import config from 'config';
-import { PassportWrapper } from 'config/passport';
 import { getSessionMiddleware } from 'config/session';
 
 @Service()

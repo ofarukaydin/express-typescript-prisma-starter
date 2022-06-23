@@ -3,7 +3,7 @@ import { promisify } from 'util';
 
 import { Service } from 'typedi';
 
-import { UsersService } from 'services/user.service';
+import { UsersService } from 'users/user.service';
 
 const scrypt = promisify(_scrypt);
 

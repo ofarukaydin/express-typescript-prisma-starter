@@ -2,8 +2,8 @@ import { User } from '@generated/type-graphql';
 import { Arg, Ctx, Mutation, Query, Resolver } from 'type-graphql';
 import { Service } from 'typedi';
 
-import { LoginInput } from 'dto/auth.dto';
-import { AuthService } from 'services/auth.service';
+import { LoginInput } from 'auth/auth.dto';
+import { AuthService } from 'auth/auth.service';
 import { Context } from 'types/context';
 
 @Service()

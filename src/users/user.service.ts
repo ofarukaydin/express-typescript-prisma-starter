@@ -1,6 +1,6 @@
 import { Service } from 'typedi';
 
-import { PrismaService } from 'services/prisma.service';
+import { PrismaService } from 'prisma/prisma.service';
 
 @Service()
 export class UsersService {

@@ -2,7 +2,7 @@ import { User } from '@generated/type-graphql';
 import { Authorized, Query, Resolver } from 'type-graphql';
 import { Service } from 'typedi';
 
-import { UsersService } from '../services/user.service';
+import { UsersService } from './user.service';
 @Service()
 @Resolver()
 export default class UsersResolver {

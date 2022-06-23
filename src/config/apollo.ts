@@ -4,10 +4,10 @@ import { buildContext } from 'graphql-passport';
 import { Authorized, buildSchema } from 'type-graphql';
 import Container from 'typedi';
 
-import { customAuthChecker } from 'guards/auth.guard';
-import AuthResolver from 'resolvers/auth.resolver';
-import UsersResolver from 'resolvers/user.resolver';
-import { PrismaService } from 'services/prisma.service';
+import { customAuthChecker } from 'auth/auth.guard';
+import AuthResolver from 'auth/auth.resolver';
+import { PrismaService } from 'prisma/prisma.service';
+import UsersResolver from 'users/user.resolver';
 
 export async function initApollo() {
   // Require authentication for auto generated resolvers

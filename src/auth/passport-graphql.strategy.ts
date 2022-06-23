@@ -2,9 +2,9 @@ import { GraphQLLocalStrategy } from 'graphql-passport';
 import { Strategy } from 'passport';
 import { Service } from 'typedi';
 
-import { AuthService } from 'services/auth.service';
-import { UsersService } from 'services/user.service';
+import { AuthService } from 'auth/auth.service';
 import { UserWithoutPassword } from 'types/context';
+import { UsersService } from 'users/user.service';
 
 type Payload = Pick<UserWithoutPassword, 'id' | 'email'>;
 
