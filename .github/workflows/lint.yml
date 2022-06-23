@@ -19,6 +19,7 @@ jobs:
           node-version: '14'
           cache: 'yarn'
       - run: yarn
+      - run: yarn prisma generate
       - run: yarn lint:strict
 
   tsc:
@@ -31,6 +32,7 @@ jobs:
           node-version: '14'
           cache: 'yarn'
       - run: yarn
+      - run: yarn prisma generate
       - run: yarn type:check
 
   prettier:
