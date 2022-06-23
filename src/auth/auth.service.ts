@@ -3,7 +3,7 @@ import { promisify } from 'util';
 
 import { Service } from 'typedi';
 
-import { UsersService } from 'users/user.service';
+import { UsersService } from 'users/users.service';
 
 const scrypt = promisify(_scrypt);
 
@@ -12,7 +12,7 @@ export class AuthService {
   constructor(private usersService: UsersService) {}
 
   async signup(email: string, password: string) {
-    const foundUser = await this.usersService.findByEmailAndIncludePassword(
+    const foundUser = await this.usersService.getByEmailAndIncludePassword(
       email,
     );
 
@@ -34,7 +34,7 @@ export class AuthService {
   }
 
   async signin(email: string, password: string) {
-    const user = await this.usersService.findByEmailAndIncludePassword(email);
+    const user = await this.usersService.getByEmailAndIncludePassword(email);
 
     if (!user?.id) {
       throw new Error('User not found');

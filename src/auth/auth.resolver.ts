@@ -1,10 +1,11 @@
 import { User } from '@generated/type-graphql';
-import { Arg, Ctx, Mutation, Query, Resolver } from 'type-graphql';
+import { Arg, Args, Ctx, Mutation, Query, Resolver } from 'type-graphql';
 import { Service } from 'typedi';
 
 import { LoginInput } from 'auth/auth.dto';
 import { AuthService } from 'auth/auth.service';
-import { Context } from 'types/context';
+import { Context, UserWithoutPassword } from 'types/context';
+import { CurrentUser } from 'users/current-user.decorator';
 
 @Service()
 @Resolver()
@@ -13,7 +14,7 @@ export default class AuthResolver {
 
   @Mutation(() => User)
   async login(
-    @Arg('input', { nullable: true }) { email, password }: LoginInput,
+    @Args() { email, password }: LoginInput,
     @Ctx() { authenticate, login }: Context,
   ) {
     const { user } = await authenticate('graphql-local', {
@@ -30,8 +31,8 @@ export default class AuthResolver {
   }
 
   @Query(() => User, { nullable: true })
-  whoAmI(@Ctx() ctx: Context) {
-    return ctx.getUser();
+  whoAmI(@CurrentUser() user: UserWithoutPassword) {
+    return user;
   }
 
   @Mutation(() => User)

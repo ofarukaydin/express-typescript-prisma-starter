@@ -4,7 +4,7 @@ import { Service } from 'typedi';
 
 import { AuthService } from 'auth/auth.service';
 import { UserWithoutPassword } from 'types/context';
-import { UsersService } from 'users/user.service';
+import { UsersService } from 'users/users.service';
 
 type Payload = Pick<UserWithoutPassword, 'id' | 'email'>;
 
@@ -45,7 +45,7 @@ export class GraphQLLocalStrategyWrapper implements PassportStrategy {
       payload,
       done,
     ) => {
-      const returnedUser = await this.usersService.findByEmail(payload.email);
+      const returnedUser = await this.usersService.getByEmail(payload.email);
 
       return done(null, returnedUser);
     };

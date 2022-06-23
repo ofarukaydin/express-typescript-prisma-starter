@@ -7,7 +7,7 @@ import Container from 'typedi';
 import { customAuthChecker } from 'auth/auth.guard';
 import AuthResolver from 'auth/auth.resolver';
 import { PrismaService } from 'prisma/prisma.service';
-import UsersResolver from 'users/user.resolver';
+import UsersResolver from 'users/users.resolver';
 
 export async function initApollo() {
   // Require authentication for auto generated resolvers
