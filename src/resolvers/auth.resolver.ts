@@ -1,8 +1,7 @@
 import { User } from '@generated/type-graphql';
 import { Arg, Ctx, Mutation, Query, Resolver } from 'type-graphql';
-import Container, { Service } from 'typedi';
+import { Service } from 'typedi';
 
-import { PassportWrapper } from 'config/passport';
 import { LoginInput } from 'dto/auth.dto';
 import { AuthService } from 'services/auth.service';
 import { Context } from 'types/context';
@@ -15,16 +14,16 @@ export default class AuthResolver {
   @Mutation(() => User)
   async login(
     @Arg('input', { nullable: true }) { email, password }: LoginInput,
-    @Ctx() ctx: Context,
+    @Ctx() { authenticate, login }: Context,
   ) {
-    const passport = Container.get(PassportWrapper);
-    const { user } = await passport.authenticate(ctx.authenticate, {
+    const { user } = await authenticate('graphql-local', {
       email,
       password,
-    });
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } as any);
 
     if (user) {
-      await ctx.login(user);
+      await login(user);
     }
 
     return user;

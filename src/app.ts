@@ -4,8 +4,7 @@ import Container from 'typedi';
 
 import config from 'config';
 import { initApollo } from 'config/apollo';
-import { corsOptions } from 'config/cors';
-import { ExpressWrapper } from 'config/passport';
+import { ExpressWrapper } from 'config/express';
 
 const startServer = async () => {
   const apolloServer = await initApollo();
@@ -15,7 +14,7 @@ const startServer = async () => {
 
   apolloServer.applyMiddleware({
     app,
-    cors: corsOptions,
+    cors: config.corsOptions,
   });
 
   app.listen(config.port, () => {
