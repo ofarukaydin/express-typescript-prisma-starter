@@ -1,5 +1,5 @@
 import { User } from '@generated/type-graphql';
-import { Arg, Args, Ctx, Mutation, Query, Resolver } from 'type-graphql';
+import { Arg, Ctx, Mutation, Query, Resolver } from 'type-graphql';
 import { Service } from 'typedi';
 
 import { LoginInput } from 'auth/auth.dto';
@@ -14,7 +14,7 @@ export default class AuthResolver {
 
   @Mutation(() => User)
   async login(
-    @Args() { email, password }: LoginInput,
+    @Arg('input') { email, password }: LoginInput,
     @Ctx() { authenticate, login }: Context,
   ) {
     const { user } = await authenticate('graphql-local', {

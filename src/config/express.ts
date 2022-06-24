@@ -4,12 +4,15 @@ import { Service } from 'typedi';
 
 import { PassportWrapper } from 'auth/passport';
 import config from 'config';
-import { getSessionMiddleware } from 'config/session';
+import { SessionMiddleware } from 'config/session';
 
 @Service()
 export class ExpressWrapper {
   public app: Express;
-  constructor(private passport: PassportWrapper) {
+  constructor(
+    private passport: PassportWrapper,
+    private sessionMiddleware: SessionMiddleware,
+  ) {
     this.app = express();
     this.initSession();
     this.initializeMiddlewares();
@@ -34,6 +37,6 @@ export class ExpressWrapper {
 
   initSession() {
     // TODO: Using sqlite store for now for faster development times. Migrate to redis in prod.
-    this.app.use(getSessionMiddleware());
+    this.app.use(this.sessionMiddleware.getSessionMiddleware());
   }
 }

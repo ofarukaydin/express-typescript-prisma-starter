@@ -1,41 +1,31 @@
+import { RequestHandler } from 'express';
 import session from 'express-session';
-import sqliteStoreFactory from 'express-session-sqlite';
-import sqlite3 from 'sqlite3';
+import { Service } from 'typedi';
 
 import config from 'config';
+import { SqlLiteSessionStorage } from 'config/sqlite-store';
 
-export function getSessionMiddleware() {
-  return session({
-    secret: config.sessionSecret,
-    saveUninitialized: false,
-    resave: false,
-    cookie: {
-      sameSite: 'none',
-      httpOnly: false,
-      maxAge: 60000,
-      secure: true,
-    },
-    store: getSqliteSessionStorage(),
-    unset: 'destroy',
-  });
-}
+@Service()
+export class SessionMiddleware {
+  public session: RequestHandler;
 
-export function getSqliteSessionStorage() {
-  const SqliteStore = sqliteStoreFactory(session);
+  constructor(private sqliteStorage: SqlLiteSessionStorage) {
+    this.session = session({
+      secret: config.sessionSecret,
+      saveUninitialized: false,
+      resave: false,
+      cookie: {
+        sameSite: 'none',
+        httpOnly: false,
+        maxAge: 60000,
+        secure: true,
+      },
+      store: this.sqliteStorage.store,
+      unset: 'destroy',
+    });
+  }
 
-  return new SqliteStore({
-    // Database library to use. Any library is fine as long as the API is compatible
-    // with sqlite3, such as sqlite3-offline
-    driver: sqlite3.Database,
-    // for in-memory database
-    // path: ':memory:'
-    path: config.sqlitePath,
-    // Session TTL in milliseconds
-    ttl: 3000000,
-    // (optional) Session id prefix. Default is no prefix.
-    prefix: 'sess:',
-    // (optional) Adjusts the cleanup timer in milliseconds for deleting expired session rows.
-    // Default is 50 minutes.
-    cleanupInterval: 3000000,
-  });
+  getSessionMiddleware() {
+    return this.session;
+  }
 }

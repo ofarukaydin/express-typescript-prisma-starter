@@ -1,4 +1,5 @@
 import { GraphQLLocalStrategy } from 'graphql-passport';
+import { buildContext } from 'graphql-passport';
 import { Strategy } from 'passport';
 import { Service } from 'typedi';
 
@@ -70,5 +71,9 @@ export class GraphQLLocalStrategyWrapper implements PassportStrategy {
         done(new Error('Email or password is not string'));
       }
     });
+  }
+
+  getContext(...params: Parameters<typeof buildContext>) {
+    return buildContext(...params);
   }
 }

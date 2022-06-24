@@ -1,4 +1,5 @@
 import { User } from '@prisma/client';
+import { Service } from 'typedi';
 
 import { PrismaService } from 'prisma/prisma.service';
 
@@ -14,6 +15,7 @@ interface UserRepositoryContract {
   >;
 }
 
+@Service()
 export class UserRepository implements UserRepositoryContract {
   constructor(private prisma: PrismaService) {}
 

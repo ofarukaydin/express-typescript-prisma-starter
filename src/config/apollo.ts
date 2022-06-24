@@ -1,11 +1,11 @@
 import { resolvers, applyResolversEnhanceMap } from '@generated/type-graphql';
 import { ApolloServer } from 'apollo-server-express';
-import { buildContext } from 'graphql-passport';
 import { Authorized, buildSchema } from 'type-graphql';
 import Container from 'typedi';
 
 import { customAuthChecker } from 'auth/auth.guard';
 import AuthResolver from 'auth/auth.resolver';
+import { GraphQLLocalStrategyWrapper } from 'auth/passport-graphql.strategy';
 import { PrismaService } from 'prisma/prisma.service';
 import UsersResolver from 'users/users.resolver';
 
@@ -29,10 +29,12 @@ export async function initApollo() {
     authChecker: customAuthChecker,
   });
 
+  const graphQLStrategy = Container.get(GraphQLLocalStrategyWrapper);
+
   const apolloServer = new ApolloServer({
     schema,
     context: ({ req, res }) => ({
-      ...buildContext({ req, res }),
+      ...graphQLStrategy.getContext({ req, res }),
       prisma: Container.get(PrismaService),
     }),
   });

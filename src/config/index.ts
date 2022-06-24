@@ -8,16 +8,22 @@ if (envFound.error) {
   throw new Error("Couldn't find .env file");
 }
 
-const apolloStudioUrl = 'https://studio.apollographql.com';
+const apolloStudioUrl = process.env.APOLLO_STUDIO_URL || '';
 
-export default {
-  env: process.env.NODE_ENV,
-  port: parseInt(process.env.PORT + '', 10),
-  sessionSecret: 'asd124lijas!@3123',
-  apolloStudioUrl,
-  sqlitePath: '/tmp/sqlite.db',
-  corsOptions: {
+class Config {
+  public env: string = process.env.NODE_ENV || 'development';
+  public port: number = process.env.PORT
+    ? parseInt(process.env.PORT + '', 10)
+    : 3000;
+
+  public sessionSecret = process.env.SESSION_SECRET || '';
+  public apolloStudioUrl = apolloStudioUrl || '';
+  public sqlitePath = process.env.SESSION_DB_PATH || '';
+
+  public corsOptions = {
     origin: [apolloStudioUrl],
     credentials: true,
-  },
-};
+  };
+}
+
+export default new Config();
