@@ -4,6 +4,7 @@ import { promisify } from 'util';
 import { Service } from 'typedi';
 
 import { UsersService } from 'users/users.service';
+import { AppError } from 'utils/error';
 
 const scrypt = promisify(_scrypt);
 
@@ -17,7 +18,7 @@ export class AuthService {
     );
 
     if (foundUser) {
-      throw new Error('User already exists');
+      throw new AppError({ message: 'User already exists' });
     }
 
     const salt = randomBytes(8).toString('hex');
@@ -37,15 +38,22 @@ export class AuthService {
     const user = await this.usersService.getByEmailAndIncludePassword(email);
 
     if (!user?.id) {
-      throw new Error('User not found');
+      throw new AppError({ message: 'User not found' });
     }
 
     const [salt, storedHash] = user.password.split('.');
 
+    if (!(salt && storedHash)) {
+      throw new AppError({
+        message:
+          'An error occurred while splitting password into salt and hash',
+      });
+    }
+
     const hash = (await scrypt(password, salt, 32)) as Buffer;
 
     if (storedHash !== hash.toString('hex')) {
-      throw new Error('Invalid password');
+      throw new AppError({ message: 'Invalid password' });
     }
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars

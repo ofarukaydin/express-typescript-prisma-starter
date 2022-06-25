@@ -12,7 +12,7 @@
     "emitDecoratorMetadata": true,
     "forceConsistentCasingInFileNames": true,
     "strict": true,
-    "strictPropertyInitialization": false,
+    "strictPropertyInitialization": true,
     "noImplicitAny": true,
     "skipLibCheck": true,
     "baseUrl": "./src",

@@ -68,7 +68,7 @@ export class GraphQLLocalStrategyWrapper implements PassportStrategy {
           })
           .catch(done);
       } else {
-        done(new Error('Email or password is not string'));
+        done(new AppError('Email or password is not string'));
       }
     });
   }
