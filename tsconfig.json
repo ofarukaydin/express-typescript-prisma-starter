@@ -18,7 +18,8 @@
     "baseUrl": "./src",
     "noFallthroughCasesInSwitch": true,
     "noImplicitOverride": true,
-    "useUnknownInCatchVariables": true
+    "useUnknownInCatchVariables": true,
+    "noUncheckedIndexedAccess": true
   },
   "include": ["./src/**/*"],
   "exclude": ["node_modules"]
