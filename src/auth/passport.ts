@@ -7,7 +7,6 @@ import { GraphQLLocalStrategyWrapper } from 'auth/passport-graphql.strategy';
 @Service()
 export class PassportWrapper {
   private _passport: PassportStatic;
-
   constructor(private strategy: GraphQLLocalStrategyWrapper) {
     this._passport = passport;
     this.initSerializer();
@@ -31,6 +30,6 @@ export class PassportWrapper {
     return [
       this._passport.initialize.bind(this._passport),
       this._passport.session.bind(this._passport),
-    ];
+    ] as const;
   }
 }
