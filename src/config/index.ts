@@ -1,11 +1,13 @@
 import { config } from 'dotenv';
 
+import { AppError } from 'utils/error';
+
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 
 const envFound = config();
 
 if (envFound.error) {
-  throw new AppError("Couldn't find .env file");
+  throw new AppError({ message: "Couldn't find .env file" });
 }
 
 const apolloStudioUrl = process.env.APOLLO_STUDIO_URL || '';

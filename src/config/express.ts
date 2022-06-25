@@ -23,8 +23,8 @@ export class ExpressWrapper {
     const [passportInitialize, passportSession] =
       this.passport.getExpressMiddlewares();
 
-    this.app.use(passportInitialize());
-    this.app.use(passportSession());
+    this.app.use(passportInitialize?.());
+    this.app.use(passportSession?.());
     this.app.use(express.json());
     this.app.use(cookieParser());
   }

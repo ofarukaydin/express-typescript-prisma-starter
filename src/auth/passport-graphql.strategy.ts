@@ -6,6 +6,7 @@ import { Service } from 'typedi';
 import { AuthService } from 'auth/auth.service';
 import { UserWithoutPassword } from 'types/context';
 import { UsersService } from 'users/users.service';
+import { AppError } from 'utils/error';
 
 type Payload = Pick<UserWithoutPassword, 'id' | 'email'>;
 
@@ -68,7 +69,7 @@ export class GraphQLLocalStrategyWrapper implements PassportStrategy {
           })
           .catch(done);
       } else {
-        done(new AppError('Email or password is not string'));
+        done(new AppError({ message: 'Email or password is not string' }));
       }
     });
   }
