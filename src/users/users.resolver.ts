@@ -5,7 +5,7 @@ import { Service } from 'typedi';
 import { UsersService } from './users.service';
 @Service()
 @Resolver()
-export default class UsersResolver {
+export class UsersResolver {
   constructor(private userService: UsersService) {}
 
   @Query(() => [User])

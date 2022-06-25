@@ -1,25 +1,17 @@
 import 'reflect-metadata';
 
-import Container from 'typedi';
+import Container, { Service } from 'typedi';
 
-import config from 'config';
-import { initApollo } from 'config/apollo';
-import { ExpressWrapper } from 'config/express';
+import { ApolloService } from 'apollo/apollo.service';
 
-const startServer = async () => {
-  const apolloServer = await initApollo();
-  const { app } = Container.get(ExpressWrapper);
+@Service()
+class ServerInitializer {
+  constructor(private apolloService: ApolloService) {}
 
-  await apolloServer.start();
+  async initialize() {
+    await this.apolloService.initialize();
+  }
+}
 
-  apolloServer.applyMiddleware({
-    app,
-    cors: config.corsOptions,
-  });
-
-  app.listen(config.port, () => {
-    console.log(`Server started on port ${config.port} (${config.env})`);
-  });
-};
-
-startServer();
+const server = Container.get(ServerInitializer);
+server.initialize();

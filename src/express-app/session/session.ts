@@ -1,13 +1,12 @@
-import { RequestHandler } from 'express';
 import session from 'express-session';
 import { Service } from 'typedi';
 
 import config from 'config';
-import { SqlLiteSessionStorage } from 'config/sqlite-store';
+import { SqlLiteSessionStorage } from 'express-app/session/sqlite-store';
 
 @Service()
 export class SessionMiddleware {
-  public session: RequestHandler;
+  public session;
 
   constructor(private sqliteStorage: SqlLiteSessionStorage) {
     this.session = session({

@@ -1,4 +1,5 @@
 import { config } from 'dotenv';
+import { Service } from 'typedi';
 
 import { AppError } from 'utils/error';
 
@@ -12,7 +13,8 @@ if (envFound.error) {
 
 const apolloStudioUrl = process.env.APOLLO_STUDIO_URL || '';
 
-class Config {
+@Service()
+export class ConfigService {
   public env: string = process.env.NODE_ENV || 'development';
   public port: number = process.env.PORT
     ? parseInt(process.env.PORT + '', 10)
@@ -28,4 +30,4 @@ class Config {
   };
 }
 
-export default new Config();
+export default new ConfigService();

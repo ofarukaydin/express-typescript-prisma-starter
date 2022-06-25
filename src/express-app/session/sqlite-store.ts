@@ -8,7 +8,7 @@ import config from 'config';
 export class SqlLiteSessionStorage {
   // SqliteStore doesn't ahve any return type
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  public store: any;
+  public store;
 
   constructor() {
     const SqliteStore = sqliteStoreFactory(session);

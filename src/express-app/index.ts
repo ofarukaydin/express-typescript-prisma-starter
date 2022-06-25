@@ -1,16 +1,16 @@
 import cookieParser from 'cookie-parser';
-import express, { Express } from 'express';
+import express from 'express';
 import { Service } from 'typedi';
 
-import { PassportWrapper } from 'auth/passport';
+import { PassportService } from 'auth/passport';
 import config from 'config';
-import { SessionMiddleware } from 'config/session';
+import { SessionMiddleware } from 'express-app/session/session';
 
 @Service()
-export class ExpressWrapper {
-  public app: Express;
+export class ExpressService {
+  public app;
   constructor(
-    private passport: PassportWrapper,
+    private passport: PassportService,
     private sessionMiddleware: SessionMiddleware,
   ) {
     this.app = express();
