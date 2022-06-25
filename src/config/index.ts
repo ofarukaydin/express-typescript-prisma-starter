@@ -15,11 +15,8 @@ const apolloStudioUrl = process.env.APOLLO_STUDIO_URL || '';
 
 @Service()
 export class ConfigService {
-  public env: string = process.env.NODE_ENV || 'development';
-  public port: number = process.env.PORT
-    ? parseInt(process.env.PORT + '', 10)
-    : 3000;
-
+  public env = process.env.NODE_ENV || 'development';
+  public port = process.env.PORT ? parseInt(process.env.PORT + '', 10) : 3000;
   public sessionSecret = process.env.SESSION_SECRET || '';
   public apolloStudioUrl = apolloStudioUrl || '';
   public sqlitePath = process.env.SESSION_DB_PATH || '';

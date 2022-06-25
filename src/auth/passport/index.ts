@@ -2,7 +2,7 @@
 import passport, { PassportStatic } from 'passport';
 import { Service } from 'typedi';
 
-import { GraphQLLocalStrategyWrapper } from 'auth/passport-graphql.strategy';
+import { GraphQLLocalStrategyWrapper } from 'auth/passport/graphql.strategy';
 
 @Service()
 export class PassportService {

@@ -9,7 +9,7 @@ import Container, { Service } from 'typedi';
 
 import { customAuthChecker } from 'auth/auth.guard';
 import { AuthResolver } from 'auth/auth.resolver';
-import { GraphQLLocalStrategyWrapper } from 'auth/passport-graphql.strategy';
+import { GraphQLLocalStrategyWrapper } from 'auth/passport/graphql.strategy';
 import { PrismaService } from 'prisma/prisma.service';
 import { Context } from 'types/context';
 import { UsersResolver } from 'users/users.resolver';
