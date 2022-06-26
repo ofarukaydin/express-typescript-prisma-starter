@@ -5,7 +5,7 @@ import Container, { Service } from 'typedi';
 import { ApolloService } from 'apollo/apollo.service';
 
 @Service()
-class ServerInitializer {
+class Server {
   constructor(private apolloService: ApolloService) {}
 
   async initialize() {
@@ -13,5 +13,5 @@ class ServerInitializer {
   }
 }
 
-const server = Container.get(ServerInitializer);
+const server = Container.get(Server);
 server.initialize();

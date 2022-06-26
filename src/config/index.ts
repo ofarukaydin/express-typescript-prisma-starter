@@ -1,30 +1,46 @@
-import { config } from 'dotenv';
-import { Service } from 'typedi';
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
+import {
+  IsEnum,
+  IsNotEmpty,
+  IsNumber,
+  validateOrReject,
+} from 'class-validator';
+import Container, { Service } from 'typedi';
 
-import { AppError } from 'utils/error';
-
-process.env.NODE_ENV = process.env.NODE_ENV || 'development';
-
-const envFound = config();
-
-if (envFound.error) {
-  throw new AppError({ message: "Couldn't find .env file" });
+export enum NodeEnvironment {
+  development = 'development',
+  production = 'production',
+  test = 'test',
 }
-
-const apolloStudioUrl = process.env.APOLLO_STUDIO_URL || '';
 
 @Service()
 export class ConfigService {
-  public env = process.env.NODE_ENV || 'development';
-  public port = process.env.PORT ? parseInt(process.env.PORT + '', 10) : 3000;
-  public sessionSecret = process.env.SESSION_SECRET || '';
-  public apolloStudioUrl = apolloStudioUrl || '';
-  public sqlitePath = process.env.SESSION_DB_PATH || '';
+  @IsEnum(NodeEnvironment)
+  public env = process.env.NODE_ENV as NodeEnvironment;
+
+  @IsNumber({ allowNaN: false })
+  public port = parseInt(process.env.PORT!);
+
+  @IsNotEmpty()
+  public sessionSecret = process.env.SESSION_SECRET!;
+
+  @IsNotEmpty()
+  public apolloStudioUrl = process.env.APOLLO_STUDIO_URL!;
+
+  @IsNotEmpty()
+  public sqlitePath = process.env.SESSION_DB_PATH!;
 
   public corsOptions = {
-    origin: [apolloStudioUrl],
+    origin: [ConfigService.prototype.apolloStudioUrl],
     credentials: true,
   };
 }
 
-export default new ConfigService();
+validateOrReject(Container.get(ConfigService), {
+  validationError: {
+    target: false,
+  },
+}).catch((errors) => {
+  console.log(errors);
+  throw new Error('Some environment variables are missing');
+});

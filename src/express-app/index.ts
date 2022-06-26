@@ -3,7 +3,7 @@ import express from 'express';
 import { Service } from 'typedi';
 
 import { PassportService } from 'auth/passport';
-import config from 'config';
+import { ConfigService } from 'config';
 import { SessionMiddleware } from 'express-app/session/session';
 
 @Service()
@@ -12,6 +12,7 @@ export class ExpressService {
   constructor(
     private passport: PassportService,
     private sessionMiddleware: SessionMiddleware,
+    private configService: ConfigService,
   ) {
     this.app = express();
     this.initSession();
@@ -30,8 +31,11 @@ export class ExpressService {
   }
 
   setHeadersForApolloStudio() {
-    this.app.set('trust proxy', config.env !== 'production');
-    this.app.set('Access-Control-Allow-Origin', config.apolloStudioUrl);
+    this.app.set('trust proxy', this.configService.env !== 'production');
+    this.app.set(
+      'Access-Control-Allow-Origin',
+      this.configService.apolloStudioUrl,
+    );
     this.app.set('Access-Control-Allow-Credentials', true);
   }
 

@@ -1,16 +1,19 @@
 import session from 'express-session';
 import { Service } from 'typedi';
 
-import config from 'config';
+import { ConfigService } from 'config';
 import { SqlLiteSessionStorage } from 'express-app/session/sqlite-store';
 
 @Service()
 export class SessionMiddleware {
   public session;
 
-  constructor(private sqliteStorage: SqlLiteSessionStorage) {
+  constructor(
+    private sqliteStorage: SqlLiteSessionStorage,
+    private configService: ConfigService,
+  ) {
     this.session = session({
-      secret: config.sessionSecret,
+      secret: this.configService.sessionSecret,
       saveUninitialized: false,
       resave: false,
       cookie: {
