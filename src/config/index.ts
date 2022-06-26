@@ -7,6 +7,8 @@ import {
 } from 'class-validator';
 import Container, { Service } from 'typedi';
 
+import { AppError } from 'utils/error';
+
 export enum NodeEnvironment {
   development = 'development',
   production = 'production',
@@ -42,5 +44,8 @@ validateOrReject(Container.get(ConfigService), {
   },
 }).catch((errors) => {
   console.log(errors);
-  throw new Error('Some environment variables are missing');
+  throw new AppError({
+    message: '',
+    stack: 'ERROR: Check env variables',
+  });
 });
